@@ -1,120 +1,128 @@
 {
-  "rewrites": [
-    {
-      "source": "/dashboard",
-      "destination": "https://a4esports-website.vercel.app/dashboard"
-    },
-    {
-      "source": "/dashboard/:path*",
-      "destination": "https://a4esports-website.vercel.app/dashboard/:path*"
-    },
-    {
-      "source": "/scrims",
-      "destination": "https://a4esports-website.vercel.app/scrims"
-    },
-    {
-      "source": "/scrims/:path*",
-      "destination": "https://a4esports-website.vercel.app/scrims/:path*"
-    },
-    {
-      "source": "/login",
-      "destination": "https://a4esports-website.vercel.app/login"
-    },
-    {
-      "source": "/login/:path*",
-      "destination": "https://a4esports-website.vercel.app/login/:path*"
-    },
-    {
-      "source": "/register",
-      "destination": "https://a4esports-website.vercel.app/register"
-    },
-    {
-      "source": "/register/:path*",
-      "destination": "https://a4esports-website.vercel.app/register/:path*"
-    },
-    {
-      "source": "/profile",
-      "destination": "https://a4esports-website.vercel.app/profile"
-    },
-    {
-      "source": "/profile/:path*",
-      "destination": "https://a4esports-website.vercel.app/profile/:path*"
-    },
-    {
-      "source": "/settings",
-      "destination": "https://a4esports-website.vercel.app/settings"
-    },
-    {
-      "source": "/settings/:path*",
-      "destination": "https://a4esports-website.vercel.app/settings/:path*"
-    },
-    {
-      "source": "/notifications",
-      "destination": "https://a4esports-website.vercel.app/notifications"
-    },
-    {
-      "source": "/notifications/:path*",
-      "destination": "https://a4esports-website.vercel.app/notifications/:path*"
-    },
-    {
-      "source": "/my-match",
-      "destination": "https://a4esports-website.vercel.app/my-match"
-    },
-    {
-      "source": "/my-match/:path*",
-      "destination": "https://a4esports-website.vercel.app/my-match/:path*"
-    },
-    {
-      "source": "/admin",
-      "destination": "https://a4esports-website.vercel.app/admin"
-    },
-    {
-      "source": "/admin/:path*",
-      "destination": "https://a4esports-website.vercel.app/admin/:path*"
-    },
-    {
-      "source": "/rules",
-      "destination": "https://a4esports-website.vercel.app/rules"
-    },
-    {
-      "source": "/rules/:path*",
-      "destination": "https://a4esports-website.vercel.app/rules/:path*"
-    },
-    {
-      "source": "/contact",
-      "destination": "https://a4esports-website.vercel.app/contact"
-    },
-    {
-      "source": "/contact/:path*",
-      "destination": "https://a4esports-website.vercel.app/contact/:path*"
-    },
-    {
-      "source": "/privacy",
-      "destination": "https://a4esports-website.vercel.app/privacy"
-    },
-    {
-      "source": "/privacy/:path*",
-      "destination": "https://a4esports-website.vercel.app/privacy/:path*"
-    },
-    {
-      "source": "/terms",
-      "destination": "https://a4esports-website.vercel.app/terms"
-    },
-    {
-      "source": "/terms/:path*",
-      "destination": "https://a4esports-website.vercel.app/terms/:path*"
-    },
-    {
-      "source": "/logo.jpg",
-      "destination": "https://a4esports-website.vercel.app/logo.jpg"
-    },
-    {
-      "source": "/tournaments/:path*",
-      "destination": "https://a4esports-website.vercel.app/tournaments/:path*"
-    },
-    {
-      "source": "/_next/:path*",
-      "destination": "https://a4esports-website.vercel.app/_next/:path*"
-    }
-  ]
+    "rewrites":  [
+                     {
+                         "source":  "/platform",
+                         "destination":  "https://a4esports-website.vercel.app/platform"
+                     },
+                     {
+                         "source":  "/platform/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/platform/:path*"
+                     },
+                     {
+                         "source":  "/dashboard",
+                         "destination":  "https://a4esports-website.vercel.app/dashboard"
+                     },
+                     {
+                         "source":  "/dashboard/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/dashboard/:path*"
+                     },
+                     {
+                         "source":  "/scrims",
+                         "destination":  "https://a4esports-website.vercel.app/scrims"
+                     },
+                     {
+                         "source":  "/scrims/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/scrims/:path*"
+                     },
+                     {
+                         "source":  "/login",
+                         "destination":  "https://a4esports-website.vercel.app/login"
+                     },
+                     {
+                         "source":  "/login/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/login/:path*"
+                     },
+                     {
+                         "source":  "/register",
+                         "destination":  "https://a4esports-website.vercel.app/register"
+                     },
+                     {
+                         "source":  "/register/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/register/:path*"
+                     },
+                     {
+                         "source":  "/profile",
+                         "destination":  "https://a4esports-website.vercel.app/profile"
+                     },
+                     {
+                         "source":  "/profile/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/profile/:path*"
+                     },
+                     {
+                         "source":  "/settings",
+                         "destination":  "https://a4esports-website.vercel.app/settings"
+                     },
+                     {
+                         "source":  "/settings/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/settings/:path*"
+                     },
+                     {
+                         "source":  "/notifications",
+                         "destination":  "https://a4esports-website.vercel.app/notifications"
+                     },
+                     {
+                         "source":  "/notifications/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/notifications/:path*"
+                     },
+                     {
+                         "source":  "/my-match",
+                         "destination":  "https://a4esports-website.vercel.app/my-match"
+                     },
+                     {
+                         "source":  "/my-match/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/my-match/:path*"
+                     },
+                     {
+                         "source":  "/admin",
+                         "destination":  "https://a4esports-website.vercel.app/admin"
+                     },
+                     {
+                         "source":  "/admin/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/admin/:path*"
+                     },
+                     {
+                         "source":  "/rules",
+                         "destination":  "https://a4esports-website.vercel.app/rules"
+                     },
+                     {
+                         "source":  "/rules/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/rules/:path*"
+                     },
+                     {
+                         "source":  "/contact",
+                         "destination":  "https://a4esports-website.vercel.app/contact"
+                     },
+                     {
+                         "source":  "/contact/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/contact/:path*"
+                     },
+                     {
+                         "source":  "/privacy",
+                         "destination":  "https://a4esports-website.vercel.app/privacy"
+                     },
+                     {
+                         "source":  "/privacy/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/privacy/:path*"
+                     },
+                     {
+                         "source":  "/terms",
+                         "destination":  "https://a4esports-website.vercel.app/terms"
+                     },
+                     {
+                         "source":  "/terms/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/terms/:path*"
+                     },
+                     {
+                         "source":  "/logo.jpg",
+                         "destination":  "https://a4esports-website.vercel.app/logo.jpg"
+                     },
+                     {
+                         "source":  "/tournaments/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/tournaments/:path*"
+                     },
+                     {
+                         "source":  "/_next/:path*",
+                         "destination":  "https://a4esports-website.vercel.app/_next/:path*"
+                     }
+                 ]
 }
