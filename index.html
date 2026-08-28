@@ -2,6 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        var token = localStorage.getItem('token');
+        if (token) {
+          var parts = token.split('.');
+          if (parts.length === 3) {
+            var payload = JSON.parse(window.atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+            if (payload && payload.exp && (payload.exp * 1000 > Date.now())) {
+              window.location.replace('/platform');
+            } else {
+              localStorage.removeItem('token');
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Auth check error:', e);
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A4 Esports — Play. Compete. Conquer.</title>
   <meta name="description" content="Garena Free Fire Max community's first fully automated scrims and tournament hosting body." />
