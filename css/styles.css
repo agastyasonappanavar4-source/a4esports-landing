@@ -218,6 +218,10 @@ a {
   flex-shrink: 0;
 }
 
+.nav__actions {
+  display: none;
+}
+
 .nav__toggle {
   display: none;
   flex-direction: column;
@@ -1202,7 +1206,28 @@ a {
    ═══════════════════════════════════════════ */
 @media (max-width: 900px) {
   .nav__links { display: none; }
-  .nav__toggle { display: flex; }
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  .nav__link--cta-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 1.05rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+  .nav__toggle {
+    display: flex;
+    flex-shrink: 0;
+  }
 
   .about {
     padding: 5rem 1.25rem;
@@ -1244,7 +1269,18 @@ a {
 }
 
 @media (max-width: 600px) {
-  .nav { padding: 1rem 1.25rem; }
+  .nav {
+    padding: 0.85rem 1.25rem;
+  }
+
+  .nav__actions {
+    gap: 0.65rem;
+  }
+
+  .nav__link--cta-mobile {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.7rem;
+  }
 
   .stats__grid {
     grid-template-columns: 1fr;
@@ -1262,10 +1298,75 @@ a {
   }
 }
 
+@media (max-width: 390px) {
+  .nav {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .nav__brand {
+    gap: 0.5rem;
+  }
+
+  .nav__logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav__name {
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav__actions {
+    gap: 0.5rem;
+  }
+
+  .nav__link--cta-mobile {
+    padding: 0.38rem 0.7rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav {
+    padding: 0.65rem 0.55rem;
+  }
+
+  .nav__brand {
+    gap: 0.35rem;
+  }
+
+  .nav__logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .nav__name {
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+  }
+
+  .nav__actions {
+    gap: 0.4rem;
+  }
+
+  .nav__link--cta-mobile {
+    padding: 0.32rem 0.5rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+  }
+
+  .nav__toggle span {
+    width: 20px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -9,16 +9,32 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
-    gsap.set('.hero__title-line .word, .tagline-word, .hero__eyebrow, .hero__sub, .hero__scroll-hint', {
+    gsap.set('.hero__title-line .word, .tagline-word, .hero__eyebrow, .hero__sub, .hero__scroll-hint, .hero__mascot', {
       opacity: 1,
+      visibility: 'visible',
       y: 0,
-      clearProps: 'transform',
+      scale: 1,
+      clearProps: 'all',
     });
     document.querySelectorAll('.spine__word').forEach((el) => {
       el.style.opacity = '1';
       el.style.visibility = 'visible';
       el.style.position = 'relative';
+      el.style.transform = 'none';
+      el.style.filter = 'none';
     });
+    document.querySelectorAll('.stat-card__value').forEach((el) => {
+      el.textContent = parseInt(el.dataset.target, 10).toLocaleString();
+    });
+    document.querySelectorAll('.stat-card__bar-fill').forEach((el) => {
+      el.style.width = '100%';
+    });
+    document.querySelectorAll('.about__item, .feature-card, .stat-card, .cta__content *').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.style.transform = 'none';
+    });
+    initNav();
     return;
   }
 
@@ -62,7 +78,10 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     });
 
     mobileMenu?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        toggle?.setAttribute('aria-expanded', 'false');
+      });
     });
 
     document.querySelectorAll('.nav__link, .mobile-menu a').forEach((link) => {
@@ -99,6 +118,8 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   /* ── HERO: Load intro + pinned scrub exit sequence ── */
   function initHeroSequence() {
+    const isMobile = window.innerWidth <= 900;
+
     gsap.set('.hero__mascot', { scale: 0.6, rotation: -8, autoAlpha: 0 });
     gsap.set('.hero__title-line .word', { y: '110%' });
     gsap.set('.hero__eyebrow, .hero__sub, .hero__scroll-hint', { autoAlpha: 0, y: 20 });
@@ -127,18 +148,18 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
       scrollTrigger: {
         trigger: '.hero',
         start: 'top top',
-        end: '+=120%',
+        end: isMobile ? '+=70%' : '+=120%',
         pin: true,
-        scrub: 1,
+        scrub: isMobile ? 0.6 : 1,
         anticipatePin: 1,
       },
     });
 
     exitTl
-      .to('.hero__mascot', { scale: 1.12, y: -30, duration: 0.4, ease: 'power2.inOut' })
-      .to('.hero__content', { y: -100, autoAlpha: 0.2, duration: 0.5, ease: 'power2.in' }, 0)
+      .to('.hero__mascot', { scale: isMobile ? 1.05 : 1.12, y: isMobile ? -16 : -30, duration: 0.4, ease: 'power2.inOut' })
+      .to('.hero__content', { y: isMobile ? -50 : -100, autoAlpha: 0.2, duration: 0.5, ease: 'power2.in' }, 0)
       .to('.hero__gradient--2', { opacity: 0.3, duration: 0.3 }, 0.2)
-      .to('.tagline-word', { y: -20, stagger: 0.05, duration: 0.3 }, 0.1)
+      .to('.tagline-word', { y: isMobile ? -10 : -20, stagger: 0.05, duration: 0.3 }, 0.1)
       .to('.hero__scroll-hint', { autoAlpha: 0, duration: 0.2 }, 0);
 
     gsap.to('.hero__mascot', {
@@ -164,6 +185,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     const words = gsap.utils.toArray('.spine__word');
     const progressFill = document.querySelector('.spine__progress-fill');
     const bgText = document.querySelector('.spine__bg-text');
+    const isMobile = window.innerWidth <= 900;
 
     gsap.set(words[0], { autoAlpha: 1, visibility: 'visible' });
 
@@ -172,7 +194,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
         trigger: '.spine',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1,
+        scrub: isMobile ? 0.6 : 1,
         pin: '.spine__sticky',
         anticipatePin: 1,
       },
@@ -184,18 +206,34 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
       const start = i * segment;
 
       if (i > 0) {
-        spineTl.fromTo(
-          words[i - 1],
-          { autoAlpha: 1, scale: 1, filter: 'blur(0px)' },
-          { autoAlpha: 0, scale: 0.92, filter: 'blur(6px)', duration: segment * 0.4, ease: 'power2.in' },
-          start
-        );
-        spineTl.fromTo(
-          word,
-          { autoAlpha: 0, scale: 1.08, y: 40, filter: 'blur(8px)' },
-          { autoAlpha: 1, scale: 1, y: 0, filter: 'blur(0px)', visibility: 'visible', duration: segment * 0.4, ease: 'power3.out' },
-          start
-        );
+        if (isMobile) {
+          // On mobile, use clean opacity and scale without heavy scrubbed CSS blur filter
+          spineTl.fromTo(
+            words[i - 1],
+            { autoAlpha: 1, scale: 1 },
+            { autoAlpha: 0, scale: 0.94, duration: segment * 0.35, ease: 'power2.in' },
+            start
+          );
+          spineTl.fromTo(
+            word,
+            { autoAlpha: 0, scale: 1.05, y: 20 },
+            { autoAlpha: 1, scale: 1, y: 0, visibility: 'visible', duration: segment * 0.35, ease: 'power2.out' },
+            start
+          );
+        } else {
+          spineTl.fromTo(
+            words[i - 1],
+            { autoAlpha: 1, scale: 1, filter: 'blur(0px)' },
+            { autoAlpha: 0, scale: 0.92, filter: 'blur(6px)', duration: segment * 0.4, ease: 'power2.in' },
+            start
+          );
+          spineTl.fromTo(
+            word,
+            { autoAlpha: 0, scale: 1.08, y: 40, filter: 'blur(8px)' },
+            { autoAlpha: 1, scale: 1, y: 0, filter: 'blur(0px)', visibility: 'visible', duration: segment * 0.4, ease: 'power3.out' },
+            start
+          );
+        }
       }
 
       spineTl.to(
@@ -228,60 +266,70 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     const aboutSection = document.querySelector('.about');
     if (!aboutSection) return;
 
-    ScrollTrigger.create({
-      trigger: '.about__frame',
-      start: 'top 85%',
-      once: true,
-      onEnter: () => {
-        gsap.fromTo('.about__frame', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' });
-      },
-    });
+    const isMobile = window.innerWidth <= 900;
 
-    ScrollTrigger.create({
-      trigger: '.about__copy',
-      start: 'top 85%',
-      once: true,
-      onEnter: () => {
-        gsap.fromTo('.about__copy .section-label', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' });
-        gsap.fromTo('.about__copy .section-title', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power4.out', delay: 0.05 });
-        gsap.fromTo('.about__lead', { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', delay: 0.1 });
-      },
-    });
-
-    ScrollTrigger.create({
-      trigger: '.about__list',
-      start: 'top 92%',
-      once: true,
-      onEnter: () => {
-        gsap.fromTo(
-          '.about__item',
-          { y: 16, opacity: 0.4 },
-          { y: 0, opacity: 1, stagger: 0.08, duration: 0.45, ease: 'power2.out' }
-        );
-      },
-    });
-
-    gsap.to('.about__accent--1', {
-      x: 30,
-      y: -20,
+    // Smooth reveal without abrupt opacity snaps or jumps
+    gsap.from('.about__frame', {
       scrollTrigger: {
-        trigger: '.about',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5,
+        trigger: '.about__frame',
+        start: 'top 88%',
+        once: true,
       },
+      y: isMobile ? 18 : 28,
+      opacity: 0,
+      duration: isMobile ? 0.6 : 0.75,
+      ease: 'power2.out',
     });
 
-    gsap.to('.about__accent--2', {
-      x: -20,
-      y: 30,
+    gsap.from('.about__copy .section-label, .about__copy .section-title, .about__lead', {
       scrollTrigger: {
-        trigger: '.about',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 2,
+        trigger: '.about__copy',
+        start: 'top 88%',
+        once: true,
       },
+      y: isMobile ? 14 : 20,
+      opacity: 0,
+      stagger: 0.08,
+      duration: isMobile ? 0.5 : 0.65,
+      ease: 'power2.out',
     });
+
+    gsap.from('.about__item', {
+      scrollTrigger: {
+        trigger: '.about__list',
+        start: 'top 92%',
+        once: true,
+      },
+      y: isMobile ? 10 : 16,
+      opacity: 0,
+      stagger: 0.06,
+      duration: isMobile ? 0.4 : 0.5,
+      ease: 'power2.out',
+    });
+
+    if (!isMobile) {
+      gsap.to('.about__accent--1', {
+        x: 30,
+        y: -20,
+        scrollTrigger: {
+          trigger: '.about',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      });
+
+      gsap.to('.about__accent--2', {
+        x: -20,
+        y: 30,
+        scrollTrigger: {
+          trigger: '.about',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2,
+        },
+      });
+    }
   }
 
   /* ── FEATURES: Pinned horizontal scroll ── */
@@ -289,6 +337,8 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     const track = document.querySelector('.features__track');
     const cards = gsap.utils.toArray('.feature-card');
     if (!track || !cards.length) return;
+
+    const isMobile = window.innerWidth <= 900;
 
     const getScrollAmount = () => {
       const trackWidth = track.scrollWidth;
@@ -304,7 +354,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
         start: 'top top',
         end: () => `+=${Math.abs(getScrollAmount())}`,
         pin: true,
-        scrub: 1,
+        scrub: isMobile ? 0.6 : 1,
         invalidateOnRefresh: true,
         anticipatePin: 1,
       },
@@ -313,7 +363,11 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     cards.forEach((card, i) => {
       gsap.fromTo(
         card,
-        { rotationY: 12, scale: 0.85, autoAlpha: 0.4 },
+        {
+          rotationY: isMobile ? 0 : 12,
+          scale: isMobile ? 0.94 : 0.85,
+          autoAlpha: isMobile ? 0.6 : 0.4,
+        },
         {
           rotationY: 0,
           scale: 1,
@@ -346,13 +400,13 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     });
 
     gsap.from('.features__header', {
-      y: 60,
+      y: isMobile ? 30 : 60,
       autoAlpha: 0,
       scrollTrigger: {
         trigger: '.features',
-        start: 'top 80%',
-        end: 'top 50%',
-        scrub: 1,
+        start: 'top 85%',
+        end: 'top 60%',
+        scrub: isMobile ? 0.6 : 1,
       },
     });
   }
@@ -360,6 +414,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   /* ── STATS: Scrub-linked counter animation ── */
   function initStatsCounter() {
     const statCards = gsap.utils.toArray('.stat-card');
+    const isMobile = window.innerWidth <= 900;
 
     statCards.forEach((card) => {
       const valueEl = card.querySelector('.stat-card__value');
@@ -368,119 +423,163 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
       const counter = { val: 0 };
 
-      gsap.to(counter, {
-        val: target,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          end: 'top 40%',
-          scrub: 1.5,
-          onUpdate: () => {
-            valueEl.textContent = Math.round(counter.val).toLocaleString();
+      if (isMobile) {
+        gsap.from(card, {
+          y: 20,
+          autoAlpha: 0,
+          scale: 0.96,
+          duration: 0.5,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            once: true,
           },
-        },
-      });
+        });
 
-      gsap.to(barFill, {
-        width: '100%',
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 80%',
-          end: 'top 45%',
-          scrub: 1,
-        },
-      });
+        gsap.to(counter, {
+          val: target,
+          duration: 1.2,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            once: true,
+            onUpdate: () => {
+              valueEl.textContent = Math.round(counter.val).toLocaleString();
+            },
+          },
+        });
 
-      gsap.from(card, {
-        y: 60,
-        autoAlpha: 0,
-        scale: 0.9,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 90%',
-          end: 'top 60%',
-          scrub: 1,
-        },
-      });
+        gsap.to(barFill, {
+          width: '100%',
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            once: true,
+          },
+        });
+      } else {
+        gsap.to(counter, {
+          val: target,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            end: 'top 40%',
+            scrub: 1.5,
+            onUpdate: () => {
+              valueEl.textContent = Math.round(counter.val).toLocaleString();
+            },
+          },
+        });
+
+        gsap.to(barFill, {
+          width: '100%',
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 80%',
+            end: 'top 45%',
+            scrub: 1,
+          },
+        });
+
+        gsap.from(card, {
+          y: 60,
+          autoAlpha: 0,
+          scale: 0.9,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            end: 'top 60%',
+            scrub: 1,
+          },
+        });
+      }
     });
   }
 
   /* ── CTA: Climax zoom + ring expansion ── */
   function initCtaClimax() {
+    const isMobile = window.innerWidth <= 900;
+
     const ctaTl = gsap.timeline({
       scrollTrigger: {
         trigger: '.cta',
-        start: 'top 70%',
-        end: 'center center',
-        scrub: 1.2,
+        start: isMobile ? 'top 85%' : 'top 70%',
+        end: isMobile ? 'top 35%' : 'center center',
+        scrub: isMobile ? 0.6 : 1.2,
       },
     });
 
     ctaTl
       .from('.cta__mascot', {
-        scale: 0.3,
-        rotation: -20,
+        scale: isMobile ? 0.6 : 0.3,
+        rotation: isMobile ? 0 : -20,
         autoAlpha: 0,
         duration: 0.4,
-        ease: 'back.out(2)',
+        ease: 'back.out(1.5)',
       })
       .from(
         '.cta__title',
-        { y: 80, autoAlpha: 0, skewY: 5, duration: 0.35, ease: 'power4.out' },
+        { y: isMobile ? 30 : 80, autoAlpha: 0, skewY: isMobile ? 0 : 5, duration: 0.35, ease: 'power3.out' },
         0.1
       )
-      .from('.cta__sub', { y: 40, autoAlpha: 0, duration: 0.25 }, 0.2)
+      .from('.cta__sub', { y: isMobile ? 20 : 40, autoAlpha: 0, duration: 0.25 }, 0.2)
       .from(
         '.btn',
-        { y: 50, autoAlpha: 0, stagger: 0.1, duration: 0.25, ease: 'power3.out' },
+        { y: isMobile ? 24 : 50, autoAlpha: 0, stagger: 0.1, duration: 0.25, ease: 'power3.out' },
         0.3
       );
 
-    gsap.to('.cta__ring--1', {
-      scale: 1.4,
-      rotation: 90,
-      borderColor: 'rgba(255,107,53,0.3)',
-      scrollTrigger: {
-        trigger: '.cta',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 2,
-      },
-    });
+    if (!isMobile) {
+      gsap.to('.cta__ring--1', {
+        scale: 1.4,
+        rotation: 90,
+        borderColor: 'rgba(255,107,53,0.3)',
+        scrollTrigger: {
+          trigger: '.cta',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2,
+        },
+      });
 
-    gsap.to('.cta__ring--2', {
-      scale: 1.2,
-      rotation: -60,
-      scrollTrigger: {
-        trigger: '.cta',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5,
-      },
-    });
+      gsap.to('.cta__ring--2', {
+        scale: 1.2,
+        rotation: -60,
+        scrollTrigger: {
+          trigger: '.cta',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      });
 
-    gsap.to('.cta__ring--3', {
-      scale: 1.6,
-      rotation: 45,
-      scrollTrigger: {
-        trigger: '.cta',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 3,
-      },
-    });
+      gsap.to('.cta__ring--3', {
+        scale: 1.6,
+        rotation: 45,
+        scrollTrigger: {
+          trigger: '.cta',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 3,
+        },
+      });
 
-    gsap.from('.cta', {
-      background: 'radial-gradient(ellipse 30% 20% at 50% 50%, #ff6b35 0%, #0a0606 60%)',
-      scrollTrigger: {
-        trigger: '.cta',
-        start: 'top 90%',
-        end: 'top 30%',
-        scrub: 1,
-      },
-    });
+      gsap.from('.cta', {
+        background: 'radial-gradient(ellipse 30% 20% at 50% 50%, #ff6b35 0%, #0a0606 60%)',
+        scrollTrigger: {
+          trigger: '.cta',
+          start: 'top 90%',
+          end: 'top 30%',
+          scrub: 1,
+        },
+      });
+    }
   }
 
   /* ── Hover micro-interactions (GSAP-enhanced) ── */
